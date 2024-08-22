@@ -1,0 +1,100 @@
+import timeit
+import random
+input("We will only use a data set of 4000 entries to save time. Bubble Sort is slow. Be patient.\n[press enter]")
+#makes random list of data
+start = timeit.default_timer()
+list_of_nums = []
+size_of_data = 4000
+for i in range(size_of_data):
+    list_of_nums.append(random.randint(1, 10000000))
+
+print(list_of_nums)
+
+end = timeit.default_timer()
+print("\nTime took to make the list: ", end-start)
+input("Press enter to continue.")
+
+input("Press enter to start bubble sort.")
+print("Working...")
+
+# bubble sort
+start = timeit.default_timer()
+sorted = False
+while sorted == False:
+    sorted = True
+    for i in range(len(list_of_nums)-1):
+        if list_of_nums[i] > list_of_nums[i+1]:
+            sorted = False
+            temp1 = list_of_nums[i]
+            temp2 = list_of_nums[i+1]
+
+            list_of_nums[i] = temp2
+            list_of_nums[i+1] = temp1
+
+
+end = timeit.default_timer()
+print(list_of_nums)
+time_took_bubble_sort = end-start
+
+print("\nTime took to sort: ", time_took_bubble_sort)
+
+
+print("\n\nNow, lets demonstrate how much fast merge sort is than bubble sort.")
+input("Press enter to create a new so we can sort it.")
+
+# makes second list of data
+start = timeit.default_timer()
+list_of_nums2 = []
+for i in range(size_of_data):
+    list_of_nums2.append(random.randint(1, 10000000))
+
+print(list_of_nums2)
+
+end = timeit.default_timer()
+print("\nTime took to make the new list: ", end-start)
+input("Press enter to continue.")
+
+input("\n\nNow we will apply merge sort [press enter to continue].")
+print("Working...")
+
+# merge sort code below
+# merge function
+
+
+def merge(list1, list2):
+    combined = []
+    i = 0
+    j = 0
+    while i < len(list1) and j < len(list2):
+        if list1[i] < list2[j]:
+            combined.append(list1[i])
+            i += 1
+        else:
+            combined.append(list2[j])
+            j += 1
+
+    while i < len(list1):
+        combined.append(list1[i])
+        i += 1
+    while j < len(list2):
+        combined.append(list2[j])
+        j += 1
+
+    return combined
+
+def merge_sort(my_list):
+    if len(my_list) == 1:
+        return my_list
+    mid_index = int(len(my_list)/2)
+    left = merge_sort(my_list[:mid_index])
+    right = merge_sort(my_list[mid_index:])
+    return merge(left, right)
+
+
+start = timeit.default_timer()
+sorted_list = merge_sort(list_of_nums2)
+end = timeit.default_timer()
+
+
+print("\n\nRemember, bubble sort took:", time_took_bubble_sort)
+print("Merge sort took: ", end-start)
