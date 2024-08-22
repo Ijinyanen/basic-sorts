@@ -1,0 +1,107 @@
+import timeit
+import random
+input("We will uses a data set of 100000 entries to make the advantages of Binary Search a little clearer.\nIt will take about 10 seconds to create the data set.\n[press enter]")
+
+#makes random list of data
+start = timeit.default_timer()
+list_of_nums = []
+size_of_data = 100000
+for i in range(size_of_data):
+    list_of_nums.append(random.randint(1, 10000000))
+
+print(list_of_nums)
+
+end = timeit.default_timer()
+print("\nTime took to make the list: ", end-start)
+input("Press enter to continue.")
+
+# linear search
+print("\nNow, let's try linear search.")
+searchNum = int(input("Enter a number to searh for between 1, and 10000000: "))
+start = timeit.default_timer()
+found = 0
+for i in range(len(list_of_nums)):
+    if searchNum == i:
+        found = 1
+        print("Found")
+        break
+
+if found == 0:
+    print("Not found.")
+
+end = timeit.default_timer()
+Time_took_linear_search = end - start
+print("\nTime took to do Linear Search: ", Time_took_linear_search)
+input("Press enter to continue.")
+
+print("\n\nWill now use Merge Sort to produce an order data set so we can use Binary Search.")
+input("press enter to continue.")
+
+# merge sort code below
+# merge function
+
+
+def merge(list1, list2):
+    combined = []
+    i = 0
+    j = 0
+    while i < len(list1) and j < len(list2):
+        if list1[i] < list2[j]:
+            combined.append(list1[i])
+            i += 1
+        else:
+            combined.append(list2[j])
+            j += 1
+
+    while i < len(list1):
+        combined.append(list1[i])
+        i += 1
+    while j < len(list2):
+        combined.append(list2[j])
+        j += 1
+
+    return combined
+
+
+def merge_sort(my_list):
+    if len(my_list) == 1:
+        return my_list
+    mid_index = int(len(my_list)/2)
+    left = merge_sort(my_list[:mid_index])
+    right = merge_sort(my_list[mid_index:])
+
+    return merge(left, right)
+print("working...")
+start = timeit.default_timer()
+sorted_list = merge_sort(list_of_nums)
+end = timeit.default_timer()
+
+print("Merge sort took: ", end-start)
+
+
+# binary search
+print("\nNow it is sorted, we can use Binary Search.")
+input("Press enter to continue to Binary Search.")
+searchNum = int(input("Enter a number to searh for between 1, and 10000000: "))
+start = timeit.default_timer()
+flag = 0
+found = 0
+left = 0
+right = len(sorted_list)
+while left != right:
+    midpoint = (left + right)//2
+    if sorted_list[midpoint] == searchNum:
+        print("found")
+        flag = 1
+        break
+    if searchNum <= sorted_list[midpoint]:
+        right = midpoint
+    else:
+        left = midpoint+1
+
+if flag == 0:
+    print("not found")
+end = timeit.default_timer()
+
+print("\nRemember, Linear Search took: ", Time_took_linear_search)
+print("Binary Search took: ", end-start)
